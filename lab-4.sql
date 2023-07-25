@@ -127,7 +127,6 @@ end
 select dbo.fn_sum()
 
 --8. Write a function to check weather given number is prime or not.
-
 	alter function fn_Prime(@n int)
 	returns varchar(100)
 	as 
@@ -163,3 +162,41 @@ select dbo.fn_Prime(3)
 	select dbo.fn_Datediff()
 
 --10. Write a function which accepts year & month in integer and returns total days in given month & year.
+ create function fn_Totaldays(@y as int,@m as int)
+ returns int
+ as 
+ begin
+	declare @a as datetime,@b as datetime
+	set @a=datefromparts(@y,@m,1)
+	set @b=eomonth(@a)
+	return abs(datediff(day,@b,@a))+1
+ end
+
+ select dbo.fn_Totaldays(2023,1)
+
+ --11(lab-4)
+create function fn_firstnamewithb()
+returns table
+as 
+return(select * from person where FirstName like 'b%')
+
+select * from dbo.fn_firstnamewithb()
+
+
+--12(lab-4). Write a function which returns a table with unique first names from person table.
+
+create function fn_uniquefirstname()
+returns table
+as
+return(select distinct firstname from person)
+
+select * from dbo.fn_uniquefirstname()
+
+--13(lab-4). Write a function which accepts department ID as a parameter & returns a detail of the persons.
+
+create function fn_findfromdep(@departmentID int)
+returns table
+as
+return(select * from person where departmentID = @departmentID)
+
+select * from dbo.fn_findfromdep(2)
